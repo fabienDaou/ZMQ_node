@@ -1,0 +1,51 @@
+<html>
+
+<head>
+
+    <title>Client ZMQ</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+
+
+</head>
+
+<body>
+
+
+    <script>
+        var wss = [];
+        wss.push(new WebSocket("ws://localhost:1234/proxy"));
+        wss.push(new WebSocket("ws://localhost:1234/proxy"));
+        wss.push(new WebSocket("ws://localhost:1234/proxy"));
+        wss.push(new WebSocket("ws://localhost:1234/proxy"));
+        wss.push(new WebSocket("ws://localhost:1234/proxy"));
+        wss.push(new WebSocket("ws://localhost:1234/proxy"));
+        wss.push(new WebSocket("ws://localhost:1234/proxy"));
+        wss.push(new WebSocket("ws://localhost:1234/proxy"));
+        
+        wss.forEach((ws, ii) => {
+            var OnMessage = function(index) {
+                return function(evt) {
+                    console.log('[' + index + ']', 'Message received: ', evt.data); 
+                }
+            };
+            
+            var OnOpen = function(index, ws) {
+                return function() {
+                    console.log('[Opened]', index);
+                    ws.send(JSON.stringify({client: index}));
+                }  
+            };
+            ws.onopen = OnOpen(ii, ws);
+            ws.onmessage = OnMessage(ii);
+            ws.onclose = OnClose;
+        });
+
+        function OnClose() {
+            console.info('Sokect is closed.'); 
+        }
+    </script>
+</body>
+
+</html>

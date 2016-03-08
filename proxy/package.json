@@ -11,5 +11,9 @@
     "url": "\t"
   },
   "author": "hycariss",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "http": "0.0.0",
+    "websocket": "^1.0.22"
+  }
 }

@@ -1,6 +1,20 @@
+var zmq = require('zmq');
 var WebSocket = require('websocket').server;
-
 var http = require('http');
+
+// zmq sockets: proxy to server
+// push-pull
+var serverPushSocket = zmq.socket('push');
+serverPushSocket.bind('tcp://*:2345', (error) => {
+    if(error) {
+        console.log('[error]', error.message);
+        process.exit(0);
+    } else {
+        console.log('[info]', 'Listening on port 2345')  
+    }
+});
+
+// websockets: web client / proxy 
 var httpServer = http.createServer();
 httpServer.listen(1234, () => {
     console.log('[info] Listen on port 1234')
@@ -24,7 +38,7 @@ wsServer.on('request', (request) => {
             console.info('[message]', message); 
             if(message.type == 'utf8') {
                 // forward message to server
-                // message.utf8Data
+                serverPushSocket.send(message.utf8Data);
             }
         });
         
@@ -33,4 +47,5 @@ wsServer.on('request', (request) => {
         });
     }
 });
+
 

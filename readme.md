@@ -1,5 +1,7 @@
 #ZMQ_node
-The goal is to create a load-balancing system. 
+Trying out ZMQ and node.js
+
+Simple app storing data sent by Web Clients in a file server-side.
 
 ##Scenario
 Several clients (./client) are connected to a proxy (./proxy). The proxy will forward their message to the server (./server) using the push-pull pattern.

@@ -34,7 +34,8 @@
             var OnOpen = function(index, ws) {
                 return function() {
                     console.log('[Opened]', index);
-                    ws.send(JSON.stringify({client: index}));
+                    var data = 'hycariss' + index;
+                    ws.send(JSON.stringify({client: index, data: data}));
                 }  
             };
             ws.onopen = OnOpen(ii, ws);
